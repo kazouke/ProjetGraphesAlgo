@@ -7,6 +7,8 @@ using namespace std;
 
 class adjacence{
 	public:
+		//Constructeurs - Adrien
+		adjacence() =delete;
 		adjacence(int taille){
 			t.resize(taille+1);
 			for (int i=0;i<=taille;i++)
@@ -17,6 +19,7 @@ class adjacence{
 			t[0][0]=taille;
 		}
 		
+		//Adrien
 		void afficher() const{
 			cout<<"    ";
 			for (int i=1;i<=t[0][0];i++) cout<<setw(3)<<i<<' ';
@@ -31,16 +34,19 @@ class adjacence{
 			}
 		}
 		
+		//Adrien - vérifie si l'arc se situe dans le tableau
 		bool dansTableau(int i, int j) const{
 			if (0 <= i && i <= t[0][0] && 0 <= j && j <= t[0][0]) return true;
 			return false;
 		}
 		
+		//Adrien - change la valeur de l'arc
 		void setValeurLien(int i, int j,int x){
 			if (!dansTableau(i,j)) return;
 			t[i][j]=x;
 		}
 		
+		//Adrien - retourne la valeur de l'arc
 		int getValeurLien(int i, int j) const{
 			if (!dansTableau(i,j)) return -INT_MAX;
 			return t[i][j];

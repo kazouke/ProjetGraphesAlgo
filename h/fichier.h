@@ -7,13 +7,14 @@ using namespace std;
 
 class fichier{
 	public:
+		//Constructeurs - Adrien
 		fichier() = delete;
 		fichier(string nomFichier){
 			_nomFichier=nomFichier;
 			if (nomFichier.substr(nomFichier.length()-4) != ".txt") _nomFichier+=".txt";
 		}
 		
-		//false en cas d'erreur
+		//Adrien - sauvegarde le graph dans un fichier - false en cas d'erreur
 		bool sauvegarder(objet & o){
 			o.convertToType1();
 			ofstream ecrire(_nomFichier);
@@ -27,7 +28,7 @@ class fichier{
 			ecrire.close();
 		}
 		
-		//false en cas d'erreur
+		//Adrien - charge le graph d'un fichier - false en cas d'erreur
 		bool charger(objet & o){
 			bool succes=false;
 			int x;
@@ -49,10 +50,12 @@ class fichier{
 			return succes;
 		}
 		
+		//Adrien - Changer le nom du fichier
 		void setNomFichier(string nomFichier){
 			_nomFichier=nomFichier;
 		}
 		
+		//Adrien - Retourne le nom du fichier
 		string getNomFichier(){
 			return _nomFichier;
 		}
