@@ -14,14 +14,14 @@ class adjacence{
 			for (int i=0;i<=taille;i++)
 			{
 				t[i].resize(taille+1);
-				for (int j=0;j<=taille;j++) t[i][j]=-1;
+				for (int j=0;j<=taille;j++) t[i][j]=0;
 			}
 			t[0][0]=taille;
 		}
 		
 		//Adrien
 		void afficher() const{
-			cout<<"    ";
+			cout<<endl<<"   |";
 			for (int i=1;i<=t[0][0];i++) cout<<setw(3)<<i<<' ';
 			cout<<endl;
 			for (int i=0;i<=t[0][0];i++) cout<<"----";

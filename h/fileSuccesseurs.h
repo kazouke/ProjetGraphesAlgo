@@ -2,65 +2,49 @@
 #define FILESUCCESSEURS_H
 
 #include <vector>
+#include <iomanip>
 using namespace std;
 
 class fileSuccesseurs{
 	public:
 		//Constructeurs - Adrien
 		fileSuccesseurs() =delete;
-		fileSuccesseurs(int nbSommets){
-			fs.resize(nbSommets+1);
+		fileSuccesseurs(int nbSommets, int nbArcs){
+			fs.resize(nbArcs+1);
 			aps.resize(nbSommets+1);
-			for(int i=1; i<=nbSommets;i++){
-				fs[i]=0;
-				aps[i]=i;
-			}
-			fs[0]=nbSommets;
+			fs[0]=nbArcs;
 			aps[0]=nbSommets;
 		}
 		
-		//Adrien - ajoute un sommet au graph
-		void ajouterUnSommet(){
-			fs[0]++;
-			fs.push_back(0);
-			aps[0]++;
-			aps.push_back(aps[0]);
-		}
+		//Set - Adrien
+		void setValeur(int n, int x){fs[n]=x;}
+		//Get - Adrien
+		int getValeur(int n) const{return fs[n];}
+		int getNbSommets()   const{return aps[0];}
+		int getNbArcs()      const{return fs[0]-aps[0];}
 		
-		//Adrien - renvoie vrai si l'arc existe déjà ou ne peut pas exister
-		bool arcDejaExistant(int s,int t) const{
-			if (0<s && 0<t && s<=fs[0] && t<=fs[0]) return true;
-			int pos=aps[s];
-			while (pos<= fs[0] && fs[pos]!=0 && fs[pos]!=t) pos++;
-			return  fs[pos]==t;
-		}
-		
-		//Adrien - ajoute un arc au graph
-		void ajouterUnArc(int s,int t){
-			if arcDejaExistant(s,t) return;
-			fs[0]++;
-			fs.push_back(0);
-			int smt = aps[0],position=fs[0];
-			do{
-				fs[position]=fs[position-1];
-				if (fs[position]==0){
-					aps[smt]++;
-					smt--;
-				}
-				position--;
-			}while (smt>s);
-			while (fs[position]>t){
-				fs[position]=fs[position-1];
-				position--;
+		//Adrien - Actualise APS
+		void mettreAJourAps(){
+			aps[1]=1;
+			int cpt=2;
+			for (int i=2; i<=fs[0]; i++) if (fs[i]==0){
+				aps[cpt]=i;
+				cpt++;
 			}
-			fs[position]=t;
 		}
 		
 		//Adrien
 		void afficher() const{
-			
+			int smt=1;
+			cout<<"---------------file successeurs--------------";
+			cout<<endl<<"i   : ";
+			for(int i=1;i<=fs[0];i++) cout<<setw(3)<<i<<' ';
+			cout<<endl<<"fs  : ";
+			for(int i=1;i<=fs[0];i++) cout<<setw(3)<<fs[i]<<' ';
+			cout<<endl<<"aps : ";
+			for(int i=1;i<=aps[0];i++) cout<<setw(3)<<aps[i]<<' ';
+			cout<<endl<<"---------------------------------------------";
 		}
-		
 		
 	private:
 		vector<int>fs;
