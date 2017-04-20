@@ -2,160 +2,286 @@
 #define POINTEURS_H
 
 /////////////////////////LISTE CHAINEE//////////////////
+class chainonSuccesseur;
+
 class chainon
-{	friend class pointeurs;
-	private:
-		chainon(double val):v(val),suiv(0){}
-		double v;
-		chainon *suiv;
+{
+	friend class pointeurs;
+private:
+	chainon(double val) :v(val), suiv(nullptr),succ(nullptr)
+	{}
+	//rajoute un successeur
+	void addSuccesseur(chainonSuccesseur* succ)
+	{
+		this->succ = succ;
+	}
+	//ajoute un suivant
+	void addSuivant(chainon* suiv)
+	{
+		this->suiv = suiv;
+	}
+	//valeur du sommet
+	double v;
+	//sommet suivant dans la liste principale
+	chainon *suiv;
+	//premier successeur
+	chainonSuccesseur* succ; //good succ
 };
 
+class chainonSuccesseur
+{
+	friend class chainon;
+	friend class pointeurs;
+	private:
+		chainonSuccesseur(chainon* v) : v(v), suiv(nullptr)
+		{
+
+		}
+		//ajoute un suivant
+		void addSuivant(chainonSuccesseur* suiv)
+		{
+			this->suiv = suiv;
+		}
+		
+		//pointeur sur le sommet dans la liste principale
+		chainon *v;
+		//successeur suivant
+		chainonSuccesseur* suiv;
+};
 class pointeurs
 {
-	private:
-		Chainon *t;
-	
-	public:
-		//Constructeur
-		pointeurs():t(0)
-		{}
-		
-		//Destructeur
-		~pointeurs()
+private:
+	chainon *t;
+
+public:
+	//Constructeur
+	pointeurs() :t(0)
+	{}
+
+	//Destructeur
+	~pointeurs()
+	{
+		while (t) // t != 0
 		{
-			while(t) // t != 0
+			chainon *tmp = t->suiv;
+			delete t;
+			t = tmp;
+		}
+	}
+
+	//MÃ©thode qui retourne la taille de la liste, donc nombre de sommet
+	int getNbSommets() const
+	{
+		int taille = 0;
+		chainon *tmp = t;
+		while (tmp)
+		{
+			taille++;
+			tmp = tmp->suiv;
+		}
+		return taille;
+	}
+	//renvoie le nombre d'arcs
+	int getNbArcs() const
+	{
+		int nbArcs = 0;
+		chainon *tmp = t;
+		while (tmp)
+		{
+			chainonSuccesseur* tmp2;
+			tmp2 = tmp->succ;
+			while (tmp2)
 			{
-				chainon *tmp=t->suiv;
-				delete t;
-				t = tmp;
+				nbArcs++;
+				tmp2 = tmp2->suiv;
 			}
 		}
-		
-		//Méthode qui retourne la taille de la liste
-		int taille() const
+		return nbArcs;
+	}
+	//MÃ©thode pour ajouter une valeur Ã  la fin de la liste
+	void ajouter(double val)
+	{
+		//Cas chaÃ®non vide
+		if (t == 0)
 		{
-			int taille=0;
-			chainon *tmp = t;
-			while(tmp)
-			{
-				taille++;
-				tmp=tmp->suiv;
-			}
-			return taille;
+			t = new chainon(val);
+			return;
 		}
-		//Méthode pour ajouter une valeur à la fin de la liste
-		void ajouter(double val)
+		//Les autres cas
+		chainon *tmp = t;
+		while (tmp)
 		{
-			//Cas chaînon vide
-			if(t==0)
-			{
-				t= new chainon(val);
-				return;
-			}
-			//Les autres cas
-			while(tmp)
-			{
-				tmp=tmp->suiv;
-			}
-			tmp->suiv = new chainon(val);
+			tmp = tmp->suiv;
 		}
-		
-		//Méthode pour supprimer un chainon à la position i
-		void supprimer(int i)
+		//tmp->suiv = new chainon(val);
+		tmp->addSuivant(new chainon(val));
+	}
+	//ajouter un successeur au sommet val
+	void ajouterSuccesseur(double val, chainon* succ)
+	{
+		chainon* tmp = t;
+		while (tmp )
 		{
-			
-			//Cas de la liste vide
-			if(!t)
+			if (tmp->v == val)
 			{
-				return;
+				if (tmp->succ == nullptr)
+				{
+					tmp->succ = new chainonSuccesseur(succ);
+				}
+				else
+				{
+					chainonSuccesseur* tmp2 = tmp->succ;
+					bool estPresent = false;
+					while (tmp2)
+					{
+						if (tmp2->v = tmp)
+						{
+							tmp2 = nullptr;
+							estPresent = true;
+						}
+						else
+						{
+							tmp2 = tmp2->suiv;
+						}
+					}
+					if (!estPresent)
+					{
+						tmp2->addSuivant(new chainonSuccesseur(succ));
+					}
+				}
+				tmp = nullptr;
 			}
-			//Cas du premier
-			if(i == 1)
-			{
-				chainon *tmp = t;
-				t = t->suiv;
-				delete tmp;
-			}
-			//Les autres cas
 			else
 			{
-				if(i < taille() && i >= 0)
+				tmp = tmp->suiv;
+			}
+			
+		}
+	}
+
+	//MÃ©thode pour supprimer un chainon Ã  la position i
+	void supprimer(int i)
+	{
+
+		//Cas de la liste vide
+		if (!t)
+		{
+			return;
+		}
+		
+		//Cas du premier
+		if (i == 1)
+		{
+			chainon *chainonADetruire = t;
+			supprimerChainonSuccesseur(chainonADetruire);
+			t = t->suiv;
+			delete chainonADetruire;
+		}
+		//Les autres cas
+		else
+		{
+			if (i < getNbSommets() && i >= 0)
+			{
+				chainon *cASup = t;
+				chainon *cAvant = 0;
+				for (int j = 0; j < i; j++)
 				{
-					chainon *cASup = t;
-					chainon *cAvant = 0;
-					for(int j = 0; j < i; j++)
+					cAvant = cASup;
+					cASup = cASup->suiv;
+				}
+				cAvant->suiv = cASup->suiv;
+				supprimerChainonSuccesseur(cASup);
+				delete cASup;
+			}
+
+		}
+	}
+
+	//permet de chercher dans les chainonSuccesseurs ceux dont la valeur est le chainon aDetruire
+	void supprimerChainonSuccesseur(chainon* aDetruire)
+	{
+		chainon* tmp = t;
+		while (tmp)
+		{
+			if (tmp != aDetruire)
+			{
+				chainonSuccesseur* tmp2 = tmp->succ;
+				while (tmp2->v == aDetruire)
+				{
+					tmp->succ = tmp2->suiv;
+					delete tmp2;
+					tmp2 = tmp->succ;
+				}
+				chainonSuccesseur* prec = tmp2;
+				tmp2 = tmp2->suiv;
+				while(tmp2)
+				{
+					if (tmp2->v == aDetruire)
 					{
-						cAvant = cASup;
-						cASup=cASup->suiv;
+						prec->suiv = tmp2->suiv;
+
+						delete tmp2;
+						tmp2 = prec->suiv;
 					}
-					cAvant->suiv = cASup->suiv;
-					delete cASup;
+					else 
+					{
+						prec = tmp2;
+						tmp2 = tmp2->suiv;
+					}
+					
 				}
 				
-			}		
+			}
+			tmp = tmp->suiv;
 		}
-		
-		//Méthode qui retourne la valeur à la position i, -1 si pas dans la liste
-		double getValeur(int i) const
+	}
+	//MÃ©thode qui retourne la valeur Ã  la position i, -1 si pas dans la liste
+	double getValeur(int i) const
+	{
+		int val = -1;
+
+		if (i < getNbSommets() && i > 0)
 		{
-			int val = -1;
-			
-			if(i < taille() && i > 0)
+			chainon *tmp = t;
+			for (int j = 0; j < i; j++)
 			{
-				chainon *tmp = t;
-				for(int j = 0; j < i; j++)
-				{
-					tmp=tmp->suiv;
-				}
-				val = tmp->v;
+				tmp = tmp->suiv;
 			}
-			return val;
+			val = tmp->v;
 		}
-		
-		//Méthode pour modifier la valeur à la position i
-		void setValeur(int i, int val)
+		return val;
+	}
+
+	//MÃ©thode pour modifier la valeur Ã  la position i
+	void setValeur(int i, int val)
+	{
+		if (i < getNbSommets() && i > 0)
 		{
-			if(i < taille() && i > 0)
+			chainon *tmp = t;
+			for (int j = 0; j < i; j++)
 			{
-				chainon *tmp = t;
-				for(int j = 0; j < i; j++)
-				{
-					tmp=tmp->suiv;
-				}
-				tmp->v = val;
+				tmp = tmp->suiv;
 			}
+			tmp->v = val;
 		}
-		
-		//Méthode qui affiche les pointeurs
-		void afficher() const{
-			int i = 0;
-			int val;
-			cout<<"---------------pointeurs--------------";
-			cout<<endl<<"Taille de la liste : "<<taille();
-			cout<<endl<<"Valeurs : "<<endl<<"[ ";
-			while(i < taille())
-			{
-				i++;
-				val = getValeur(i);
-				cout << val << " ";					
-			}
-			cout << " ]";
-			cout<<endl<<"---------------------------------------------";
+	}
+
+	//MÃ©thode qui affiche les pointeurs
+	void afficher() const {
+		int i = 0;
+		int val;
+		cout << "---------------pointeurs--------------";
+		cout << endl << "Taille de la liste : " << getNbSommets();
+		cout << endl << "Valeurs : " << endl << "[ ";
+		while (i < getNbSommets())
+		{
+			i++;
+			val = getValeur(i);
+			cout << val << " ";
 		}
+		cout << " ]";
+		cout << endl << "---------------------------------------------";
+	}
 };
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
