@@ -12,102 +12,136 @@ class chainon
 
 class pointeurs
 {
-	public:
-		pointeurs();
-		~pointeurs();
-		int taille() const;
-		void ajouter(double val);
-		void supprimer(double val);
 	private:
 		Chainon *t;
-
-	//Construction et destruction de pointeurs
-	pointeurs():t(0)
-	{}
 	
-	~pointeurs()
-	{
-		while(t) // t != 0
+	public:
+		//Constructeur
+		pointeurs():t(0)
+		{}
+		
+		//Destructeur
+		~pointeurs()
 		{
-			chainon *tmp=t->suiv;
-			delete t;
-			t = tmp;
-		}
-	}
-	
-	//Méthode qui retourne la taille de la liste chainée
-	int taille() const
-	{
-		int taille=0;
-		chainon *tmp = t;
-		while(tmp)
-		{
-			taille++;
-			tmp=tmp->suiv;
-		}
-		return taille;
-	}
-	//Méthode pour ajouter une valeur à la liste chaînée
-	//Les valeurs sont classées par ordre croissant
-	void ajouter(double val)
-	{
-		//Cas chaînon vide
-		if(t==0)
-		{
-			t= new chainon(val);
-			return;
-		}
-		//Cas tête
-		if(v<t->v)
-		{
-			chainon *tmp = t;		
-			t = new chainon(val);
-			t->suiv = tmp;
-			return;
-		}
-		//Le reste 
-		chainon *c0 = 0, *c1=t;
-		while(c1!=0 && c1->v < v)
-		{
-			c0=c1;
-			c1=c1->suiv;
+			while(t) // t != 0
+			{
+				chainon *tmp=t->suiv;
+				delete t;
+				t = tmp;
+			}
 		}
 		
-		chainon *c = new chainon(v);
-		c0->suiv = c;
-		c->suiv = c1;
-	}
-	
-	//Méthode pour supprimer un chainon
-	void supprimer(double val)
-	{
-		//Cas de la liste vide
-		if(t==0)
+		//Méthode qui retourne la taille de la liste
+		int taille() const
 		{
-			return;
-		}
-		//Cas du premier
-		if(t->v == v)
-		{
+			int taille=0;
 			chainon *tmp = t;
-			t = t->suiv;
-			delete tmp;
-			return;
+			while(tmp)
+			{
+				taille++;
+				tmp=tmp->suiv;
+			}
+			return taille;
 		}
-		//Cas milieu
-		chainon *c0=0, *c1=t;
-		while(c1 != 0 && v > c1->v )
+		//Méthode pour ajouter une valeur à la fin de la liste
+		void ajouter(double val)
 		{
-			c0 = c1;
-			c1 = c1->suiv;
+			//Cas chaînon vide
+			if(t==0)
+			{
+				t= new chainon(val);
+				return;
+			}
+			//Les autres cas
+			while(tmp)
+			{
+				tmp=tmp->suiv;
+			}
+			tmp->suiv = new chainon(val);
 		}
-		if(c1!=0 && c1->v==v)
+		
+		//Méthode pour supprimer un chainon à la position i
+		void supprimer(int i)
 		{
-			c0->suiv = c1->suiv;
-			delete c1;
+			
+			//Cas de la liste vide
+			if(!t)
+			{
+				return;
+			}
+			//Cas du premier
+			if(i == 1)
+			{
+				chainon *tmp = t;
+				t = t->suiv;
+				delete tmp;
+			}
+			//Les autres cas
+			else
+			{
+				if(i < taille() && i >= 0)
+				{
+					chainon *cASup = t;
+					chainon *cAvant = 0;
+					for(int j = 0; j < i; j++)
+					{
+						cAvant = cASup;
+						cASup=cASup->suiv;
+					}
+					cAvant->suiv = cASup->suiv;
+					delete cASup;
+				}
+				
+			}		
 		}
-	}
-
+		
+		//Méthode qui retourne la valeur à la position i, -1 si pas dans la liste
+		double getValeur(int i) const
+		{
+			int val = -1;
+			
+			if(i < taille() && i > 0)
+			{
+				chainon *tmp = t;
+				for(int j = 0; j < i; j++)
+				{
+					tmp=tmp->suiv;
+				}
+				val = tmp->v;
+			}
+			return val;
+		}
+		
+		//Méthode pour modifier la valeur à la position i
+		void setValeur(int i, int val)
+		{
+			if(i < taille() && i > 0)
+			{
+				chainon *tmp = t;
+				for(int j = 0; j < i; j++)
+				{
+					tmp=tmp->suiv;
+				}
+				tmp->v = val;
+			}
+		}
+		
+		//Méthode qui affiche les pointeurs
+		void afficher() const{
+			int i = 0;
+			int val;
+			cout<<"---------------pointeurs--------------";
+			cout<<endl<<"Taille de la liste : "<<taille();
+			cout<<endl<<"Valeurs : "<<endl<<"[ ";
+			while(i < taille())
+			{
+				i++;
+				val = getValeur(i);
+				cout << val << " ";					
+			}
+			cout << " ]";
+			cout<<endl<<"---------------------------------------------";
+		}
 };
 
 #endif
