@@ -117,10 +117,10 @@ public:
 		{
 			for (int j = 1;j <= n;j++) if (t1->getValeurLien(i, j)>0)
 			{
-				t2->setValeur(cpt, j);
+				t2->setValeur(cpt, j, t1->getValeurLien(i, j));
 				cpt++;
 			}
-			t2->setValeur(cpt, 0);
+			t2->setValeur(cpt, 0, 0);
 			cpt++;
 		}
 		t2->mettreAJourAps();
@@ -135,7 +135,7 @@ public:
 		int cpt = 1;
 		for (int i = 1;i <= n;i++)
 			if (t2->getValeur(i) == 0) cpt++;
-			else t1->setValeurLien(cpt, t2->getValeur(i), 1);
+			else t1->setValeurLien(cpt, t2->getValeur(i), t2->getCout(i));
 	}
 	//Romain
 	void fs_aps2Pointeurs()
@@ -163,20 +163,17 @@ public:
 	{
 		
 		int nbSommet = t3->getNbSommets();
-		cout << "oui";
 		int nbArcs = t3->getNbArcs();
-		cout << "oui";
 		t2 = new fileSuccesseurs(nbSommet, nbArcs+nbSommet);
 		int cpt = 1;
-		cout << "oui";
 		for (int i = 1;i <= nbSommet;i++)
 		{
 			for (int j = 0;j < t3->getNbSuccesseur(i);j++)
 			{
-				t2->setValeur(cpt, t3->getSuccesseur(j, i));
+				t2->setValeur(cpt, t3->getSuccesseur(j, i), -5); //A MODIFIER -5 par le cout
 				cpt++;
 			}
-			t2->setValeur(cpt, 0);
+			t2->setValeur(cpt, 0, 0);
 			cpt++;
 		}
 
