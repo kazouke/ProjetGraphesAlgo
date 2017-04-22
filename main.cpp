@@ -12,7 +12,11 @@ int main(int argc, char** argv) {
 	h.charger(o);
 	//-------------------
 	o.modifierTableau();
+	cout<<"Conversion type 2 : "<<endl;
 	o.convertToType2();
+	o.afficher();
+	cout<<endl<<"Conversion type 3 : "<<endl;
+	o.convertToType3();
 	o.afficher();
 	//-------------------
 	h.sauvegarder(o);
