@@ -67,8 +67,8 @@ public:
 	void convertToType1()
 	{
 		if (type == 1) return;
-		if (type == 3) convertToType2();
 		if (type == 2) { fs_aps2Mat();type = 1;delete t2;t2 = 0; }
+		if (type == 3) return; // A FAIRE
 	}
 	void convertToType2()
 	{
@@ -81,8 +81,8 @@ public:
 
 	void convertToType3()
 	{
-		if (type == 1) convertToType2();
-		if (type == 2) { fs_aps2Pointeurs(); type = 3; delete t2;t2 = nullptr; }
+		if (type == 1) return; // A FAIRE
+		if (type == 2) { fs_aps2Pointeurs(); type = 3; delete t2;t2 = nullptr; } // A FAIRE
 		if (type == 3) return;
 	}
 
@@ -111,8 +111,8 @@ public:
 		int n = t1->getValeurLien(0, 0);
 		for (int i = 1;i <= n;i++) for (int j = 1;j <= n;j++) if (t1->getValeurLien(i, j)>0) cpt++;
 		t2 = new fileSuccesseurs(n, cpt + n);
-		cpt = 2;
-		t2->setValeur(1, 0);
+		cpt = 1;
+		//t2->setValeur(1, 0);
 		for (int i = 1;i <= n;i++)
 		{
 			for (int j = 1;j <= n;j++) if (t1->getValeurLien(i, j)>0)
@@ -145,9 +145,10 @@ public:
 		//construction sommets
 		for (int i = 1;i <=nbSommet;i++)
 		{
+			cout << i << endl;
 			t3->ajouter(i);
 		}
-
+		
 		// construction des successeurs
 		for (int i = 1;i <= nbSommet;i++)
 		{

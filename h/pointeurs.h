@@ -23,7 +23,7 @@ private:
 	//valeur du sommet
 	double v;
 	//sommet suivant dans la liste principale
-	chainon *suiv;
+	chainon* suiv;
 	//premier successeur
 	chainonSuccesseur* succ; //good succ
 };
@@ -46,7 +46,7 @@ class chainonSuccesseur
 		//pointeur sur le sommet dans la liste principale
 		chainon *v;
 		//successeur suivant
-		chainonSuccesseur* suiv;
+		chainonSuccesseur *suiv;
 };
 class pointeurs
 {
@@ -106,7 +106,7 @@ public:
 		return nbArcs;
 	}
 	//renvoie le nombre de successeur du sommet i
-	int getNbSuccesseur(int i)
+	int getNbSuccesseur(int i) const
 	{
 		int j = 1;
 		chainon* tmp = t;
@@ -130,7 +130,7 @@ public:
 	}
 
 	//methode pour avoir la valeur du successeur i du sommet val
-	int getSuccesseur(int i, int val)
+	int getSuccesseur(int i, int val) const
 	{
 		chainon* tmp = t;
 		int j = 0;
@@ -159,18 +159,18 @@ public:
 	void ajouter(double val)
 	{
 		//Cas chaînon vide
-		if (t == 0)
+		if (t == nullptr)
 		{
 			t = new chainon(val);
 			return;
 		}
 		//Les autres cas
 		chainon *tmp = t;
-		while (tmp)
+		while (tmp->suiv)
 		{
 			tmp = tmp->suiv;
 		}
-		//tmp->suiv = new chainon(val);
+		
 		tmp->addSuivant(new chainon(val));
 	}
 	//ajouter un successeur au sommet val
@@ -313,7 +313,7 @@ public:
 	{
 		int val = -1;
 
-		if (i < getNbSommets() && i > 0)
+		if (i < getNbSommets() && i >=0)
 		{
 			chainon *tmp = t;
 			for (int j = 0; j < i; j++)
@@ -348,9 +348,15 @@ public:
 		cout << endl << "Valeurs : " << endl << "[ ";
 		while (i < getNbSommets())
 		{
-			i++;
+			
 			val = getValeur(i);
-			cout << val << " ";
+			cout << val << " :";
+			for (int j = 0;j < getNbSuccesseur(i);j++)
+			{
+				cout << getSuccesseur(j, i)<<" ";
+			}
+			cout << endl;
+			i++;
 		}
 		cout << " ]";
 		cout << endl << "---------------------------------------------";
