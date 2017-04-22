@@ -67,8 +67,8 @@ public:
 	void convertToType1()
 	{
 		if (type == 1) return;
+		if (type == 3) convertToType2();
 		if (type == 2) { fs_aps2Mat();type = 1;delete t2;t2 = 0; }
-		if (type == 3) return; // A FAIRE
 	}
 	void convertToType2()
 	{
@@ -81,7 +81,7 @@ public:
 
 	void convertToType3()
 	{
-		if (type == 1) return; // A FAIRE
+		if (type == 1) convertToType2();
 		if (type == 2) { fs_aps2Pointeurs(); type = 3; delete t2;t2 = nullptr; } // A FAIRE
 		if (type == 3) return;
 	}
