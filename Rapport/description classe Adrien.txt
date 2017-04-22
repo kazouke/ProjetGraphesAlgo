@@ -1,0 +1,25 @@
+OBJET - Adrien
+Cette classe gère le graph sous toutes les formes sous lesquels il peut être.
+L'information sur sa forme est conservée dans l'entier "type" :
+-1 correspond à la matrice d'adjacence
+-2 file successeur
+-et 3 à la représentation par liste chaînée.
+Le type est relié à un pointeur, un seul peut être utilisé à la fois car l'objet peut être d'un seul type à la fois : "t1", "t2" ou "t3".
+L'objet gère la conversion d'un type à un autre grâce aux fonctions "convertToType1()","convertToType2()" et "convertToType3()".
+On peut afficher un graph grâce à la fonction "afficher()" qui est supportée par toutes les formes de l'objet.
+Pour la modification du graph, l'objet est convertie en type 1 et est géré par la fonction "modifierTableau()"
+
+MATRICE D'ADJACENCE - Adrien
+La matrice d'adjacence est la forme 1 de l'objet, le constructeur "adjacence(int taille)" initialise une matrice carré de taille "taille" remplie de 0.
+La méthode "afficher()" est utilisée par la classe objet afin d'afficher la matrice.
+La fonction "dansTableau(int i, int j)" renvoit vrai si la valeur (i,j) ne dépasse pas le tableau, elle est utilisée par "get/setValeurLien(int i, int j)" qui permet de retourner/modifier la valeur en (i,j)
+
+FILE DE SUCCESSEURS - Adrien
+La forme file de successeurs est la 2 de l'objet, "fileSuccesseurs(int nbSommets, int nbArcs)" permet d'initialiser fs et aps.
+"mettreAJourAps()" permet de réactualiser aps en fonction de fs.
+La méthode "afficher()" est utilisée par la classe objet afin d'afficher la file de successeurs.
+
+FICHIER - Adrien
+Cette classe permet de sauvegarder un graph dans un fichier avec le nom définit dans le constructeur de l'objet "fichier" > "fichier(string nomFichier)". On peut changer/connaitre le nom du fichier grâce à "setNomFichier(string nomFichier)" et "getNomFichier()".
+Elle fonctionne avec l'objet sous la forme type 1, la matrice d'adjacence.
+On peut sauvergarder ou charger le graph à partir un fichier texte "sauvegarder(objet & o)" / "charger(objet & o)".
