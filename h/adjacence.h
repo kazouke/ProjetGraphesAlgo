@@ -51,6 +51,13 @@ public:
 		if (!dansTableau(i, j)) return -INT_MAX;
 		return t[i][j];
 	}
+	
+	//jp
+	int getTaille() const {return t[0][0];}
+	int getCase(int i, int j) const {return t[i][j];}
+	void setCase(int i, int j,int valeur) {
+		t[i][j] = valeur;
+	}
 
 private:
 	vector<vector<int>>t;
