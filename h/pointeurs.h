@@ -33,9 +33,9 @@ class chainonSuccesseur
 	friend class chainon;
 	friend class pointeurs;
 	private:
-		chainonSuccesseur(chainon* v) : v(v), suiv(nullptr)
+		chainonSuccesseur(chainon* v, double cout=-1) : v(v), suiv(nullptr), cout(cout)
 		{
-
+			
 		}
 		//ajoute un suivant
 		void addSuivant(chainonSuccesseur* suiv)
@@ -43,10 +43,20 @@ class chainonSuccesseur
 			this->suiv = suiv;
 		}
 		
+		void setCout(double cout)
+		{
+			this->cout = cout;
+		}
+		double getcout() const
+		{
+			return this->cout;
+		}
 		//pointeur sur le sommet dans la liste principale
 		chainon *v;
 		//successeur suivant
 		chainonSuccesseur *suiv;
+		//cout de l'arc
+		double cout;
 };
 class pointeurs
 {
@@ -156,6 +166,33 @@ public:
 		}
 		return -1;
 	}
+
+	//retourne le cout de l'arc liant le sommet val a son i-eme successeur
+	double getCout(int i, int val) const
+	{
+		chainon* tmp = t;
+		int j = 0;
+		while (tmp && j < val)
+		{
+			tmp = tmp->suiv;
+			j++;
+		}
+		if (j == val)
+		{
+			chainonSuccesseur* tmp2 = tmp->succ;
+			j = 0;
+			while (tmp2 && j<i)
+			{
+				j++;
+				tmp2 = tmp2->suiv;
+			}
+			if (j == i)
+			{
+				return tmp2->cout;
+			}
+		}
+		return -1;
+	}
 	//Méthode pour ajouter une valeur à la fin de la liste
 	void ajouter(double val)
 	{
@@ -174,8 +211,8 @@ public:
 		
 		tmp->addSuivant(new chainon(val));
 	}
-	//ajouter un successeur au sommet val
-	void ajouterSuccesseur(double val, chainon* succ)
+	//ajouter un successeur au sommet val 
+	void ajouterSuccesseur(double val, chainon* succ, double cout=-1)
 	{
 		chainon* tmp = t;
 		while (tmp )
@@ -217,7 +254,7 @@ public:
 		}
 	}
 	//ajoute un chainon successeur pointeur sur succ au sommet val
-	void ajouterSuccesseur(double val, double succ)
+	void ajouterSuccesseur(double val, double succ, double cout=-1)
 	{
 		chainon* tmp = t;
 		while (tmp)
@@ -230,7 +267,7 @@ public:
 		}
 		if (tmp->v == succ)
 		{
-			ajouterSuccesseur(val, tmp);
+			ajouterSuccesseur(val, tmp,cout);
 		}
 	}
 	//Méthode pour supprimer un chainon à la position i
