@@ -5,6 +5,9 @@
 #include "fileSuccesseurs.h"
 #include "pointeurs.h"
 #include <string>
+
+const double MAXPOIDS =100.0;
+
 class objet {
 public:
 	//Adrien
@@ -178,6 +181,189 @@ public:
 		}
 
 		t2->mettreAJourAps();
+	}
+	
+	//jp
+	vector<int> Dijkstra(int s)
+	{
+		int cpt,v,j,k,indiceCout;
+		double max;
+		vector<int> d,pred;
+		
+		int n = this->getType2()->getNbSommets();
+		
+		d.resize(n+1);
+		d[0] = n;
+		pred.resize(n+1);
+		vector<bool> dansS;
+		dansS.resize(n+1);
+		
+		for(int i=1; i<=n; i++) 
+		{
+			indiceCout = this->getType2()->getAps(s);
+			while(this->getType2()->getValeur(indiceCout) != 0 || this->getType2()->getValeur(indiceCout) != i)
+			{
+				indiceCout++;
+			}
+			if(indiceCout != 0)
+			{
+				d[i] = this->getType2()->getCout(indiceCout);
+			}
+			else d[i] = -INT_MAX;
+			
+			if(d[i] != MAXPOIDS)
+				pred[i] = s;
+			else
+				pred[i] = -1;
+			dansS[i] = true;
+		}
+		
+		
+		dansS[s] = false;
+		d[s] = 0;
+		cpt = n - 1;	
+		while(cpt > 0)
+		{
+			max = MAXPOIDS;
+			for(int i=1; i<=n; i++)
+			{
+				
+				
+				if(dansS[i] && d[i] < max) 
+				{
+					max = d[i];
+					j=i;
+				}
+				if(max == MAXPOIDS)
+				{
+					break;
+				}
+				
+				dansS[j] = false;
+				cpt--;
+				for(int h=this->getType2()->getAps(j); (k=this->getType2()->getValeur(h))!=0; h++) 
+				{
+					
+					if(dansS[k]) 
+					{
+						indiceCout = this->getType2()->getAps(j);
+						while(this->getType2()->getValeur(indiceCout) != 0 || this->getType2()->getValeur(indiceCout) != k)
+						{
+							indiceCout++;
+						}
+						if(indiceCout != 0)
+						{
+							v=d[j]+ this->getType2()->getCout(indiceCout);
+						}
+						else v = -INT_MAX;
+						
+						if(v<d[k]) 
+						{
+							d[k]=v;
+							pred[k]=j;
+						}
+					}
+				}
+			}
+		}
+		
+		return d;
+	}
+	
+	//jp
+	vector<int> ddi() //renvoie le demi degré intérieur
+	{
+		vector<int> d(this->getType2()->getNbSommets()+1,0);
+		
+		for(int j = 1; j <= this->getType2()->getValeur(0); j++)
+			d[this->getType2()->getValeur(j)]++;
+			
+		return d;
+	}
+	
+	//jp
+	bool arborescence() // renvoie vrai si le graphe est une arborescence
+	{	
+		if(this->getType2()->getValeur(0) != this->getType2()->getNbSommets() * 2 - 1) 
+			return false;
+		
+		vector<int> d(this->getType2()->getNbSommets()+1,0);
+						
+		for(int j = 1; j <= this->getType2()->getValeur(0); j++)
+		{
+			d[this->getType2()->getValeur(j)]++;
+			if(d[this->getType2()->getValeur(j)] > 1)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	//jp
+	vector<int> d2app() //renvoie un vecteur de l'adresse des premiers prédécesseurs à partir du ddi
+	{
+		vector<int> d = ddi();
+		int n = d[0];
+		vector<int> app;
+		app.resize(n+1);
+		app[0] = n; app[1] = 1;
+		
+		for(int i = 1; i < n; i++)
+			app[i+1] = app[i] + d[i] + 1;
+		
+		return app;
+	}
+	
+	//jp
+	vector<int> fs_app2fp()
+	{
+		vector<int> fp;
+		vector<int> app = d2app();
+		int n = this->getType2()->getValeur(0);
+		int cpt = 1;
+		for(int i = 1; i <= n; i++)
+		{
+			if(this->getType2()->getValeur(i) == 0)
+				cpt++;
+			else
+			{
+				fp[app[this->getType2()->getValeur(i)]] = cpt;
+				app[this->getType2()->getValeur(i)]++;
+			}
+		}
+		
+		return fp;
+	}
+	
+	//jp
+	void fs_aps2fp_app(vector<int> &fp, vector<int> &app) //rempli les vecteurs de la file des pred et de l'app à partir de fs et aps
+	{
+		int n = this->getType2()->getNbSommets();
+		int m = this->getType2()->getValeur(0);
+		
+		vector<int> d = ddi();
+		app = d2app();
+		
+		fp.resize(m+1);
+		fp[0] = m;
+		
+		int s = 1;
+		for(int i = 1; i < m; i++)
+		{
+			if(this->getType2()->getValeur(i) != 0)
+			{
+				fp[app[this->getType2()->getValeur(i)]] = s;
+				app[this->getType2()->getValeur(i)]++;
+			}
+			else
+				s++;
+		}
+		for(int i = n; i > 1; i--)
+		{
+			fp[app[i]] = 0;
+			app[i] = app[i-1] + 1;
+		}
+		app[1]=1;
 	}
 
 	
