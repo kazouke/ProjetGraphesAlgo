@@ -3,7 +3,7 @@
 
 /////////////////////////LISTE CHAINEE//////////////////
 class chainonSuccesseur;
-
+//Romain
 class chainon
 {
 	friend class pointeurs;
@@ -27,7 +27,7 @@ private:
 	//premier successeur
 	chainonSuccesseur* succ; //good succ
 };
-
+//Romain
 class chainonSuccesseur
 {
 	friend class chainon;
@@ -55,7 +55,7 @@ private:
 
 public:
 	//Constructeur
-	pointeurs() :t(0)
+	pointeurs() :t(nullptr)
 	{}
 
 	//Destructeur
@@ -64,6 +64,13 @@ public:
 		while (t) // t != 0
 		{
 			chainon *tmp = t->suiv;
+			chainonSuccesseur *tmp2 = t->succ;
+			while (tmp2)
+			{
+				tmp2 = tmp2->suiv;
+				delete t->succ;
+				t->succ = tmp2;
+			}
 			delete t;
 			t = tmp;
 		}
@@ -97,6 +104,56 @@ public:
 			}
 		}
 		return nbArcs;
+	}
+	//renvoie le nombre de successeur du sommet i
+	int getNbSuccesseur(int i)
+	{
+		int j = 1;
+		chainon* tmp = t;
+		while (tmp && j < i)
+		{
+			tmp = tmp->suiv;
+			j++;
+		}
+		if (j == i)
+		{
+			chainonSuccesseur* tmp2 = tmp->succ;
+			int cpt = 0;
+			while (tmp2)
+			{
+				cpt++;
+				tmp2 = tmp2->suiv;
+			}
+			return cpt;
+		}
+		return 0;
+	}
+
+	//methode pour avoir la valeur du successeur i du sommet val
+	int getSuccesseur(int i, int val)
+	{
+		chainon* tmp = t;
+		int j = 0;
+		while (tmp && j < val)
+		{
+			tmp = tmp->suiv;
+			j++;
+		}
+		if (j == val)
+		{
+			chainonSuccesseur* tmp2 = tmp->succ;
+			j = 0;
+			while (tmp2 && j<i)
+			{
+				j++;
+				tmp2 = tmp2->suiv;
+			}
+			if (j == i)
+			{
+				return tmp2->v->v;
+			}
+		}
+		return -1;
 	}
 	//Méthode pour ajouter une valeur à la fin de la liste
 	void ajouter(double val)
@@ -158,7 +215,23 @@ public:
 			
 		}
 	}
-
+	//ajoute un chainon successeur pointeur sur succ au sommet val
+	void ajouterSuccesseur(double val, double succ)
+	{
+		chainon* tmp = t;
+		while (tmp)
+		{
+			if (tmp->v == succ)
+			{
+				break;
+			}
+			tmp = tmp->suiv;
+		}
+		if (tmp->v == succ)
+		{
+			ajouterSuccesseur(val, tmp);
+		}
+	}
 	//Méthode pour supprimer un chainon à la position i
 	void supprimer(int i)
 	{

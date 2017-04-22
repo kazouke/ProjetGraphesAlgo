@@ -22,6 +22,8 @@ public:
 	int getValeur(int n) const { return fs[n]; }
 	int getNbSommets()   const { return aps[0]; }
 	int getNbArcs()      const { return fs[0] - aps[0]; }
+	//Get - Romain
+	int getAps(int n) const { return aps[n]; }
 
 	//Adrien - Actualise APS
 	void mettreAJourAps() {

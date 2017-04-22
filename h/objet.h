@@ -74,13 +74,15 @@ public:
 	{
 		if (type == 1) { Mat2fs_aps();type = 2;delete t1;t1 = 0; }
 		if (type == 2) return;
-		if (type == 3) return; // A FAIRE
+		if (type == 3) {
+			pointeur2fs_aps(); type = 2;delete t3;t3 = nullptr;
+		} 
 	}
 
 	void convertToType3()
 	{
 		if (type == 1) return; // A FAIRE
-		if (type == 2) return; // A FAIRE
+		if (type == 2) { fs_aps2Pointeurs(); type = 3; delete t2;t2 = nullptr; } // A FAIRE
 		if (type == 3) return;
 	}
 
@@ -90,7 +92,7 @@ public:
 		if (type == 0) return;
 		if (type == 1) t1->afficher();
 		if (type == 2) t2->afficher();
-		//if (type==3) t3->afficher(); // A FAIRE
+		if (type==3) t3->afficher(); 
 	}
 
 	//Adrien - Retourne la valeur du lien s|t
@@ -135,9 +137,50 @@ public:
 			if (t2->getValeur(i) == 0) cpt++;
 			else t1->setValeurLien(cpt, t2->getValeur(i), 1);
 	}
+	//Romain
+	void fs_aps2Pointeurs()
+	{
+		int nbSommet = t2->getNbSommets();
+		t3 = new pointeurs();
+		//construction sommets
+		for (int i = 1;i <=nbSommet;i++)
+		{
+			t3->ajouter(i);
+		}
 
+		// construction des successeurs
+		for (int i = 1;i <= nbSommet;i++)
+		{
+			for (int j = t2->getAps(i);int k=t2->getValeur(j) != 0;j++)
+			{
+				t3->ajouterSuccesseur(i, k);
+			}
+		}
+	}
+	//ROmain
+	void pointeur2fs_aps()
+	{
+		int nbSommet = t3->getNbSommets();
+		int nbArcs = t3->getNbArcs();
+		t2 = new fileSuccesseurs(nbSommet, nbArcs+nbSommet);
+		int cpt = 1;
+		for (int i = 1;i <= nbSommet;i++)
+		{
+			for (int j = 0;j < t3->getNbSuccesseur(i);j++)
+			{
+				t2->setValeur(cpt, t3->getSuccesseur(j, i));
+				cpt++;
+			}
+			t2->setValeur(cpt, 0);
+			cpt++;
+		}
 
-private:
+		t2->mettreAJourAps();
+	}
+
+	
+
+	private:
 	int 	type;				//Contient le type de l'objet - gère la comptabilité
 	adjacence		*t1;		//type=1 - Matrice d'Adjacence
 	fileSuccesseurs	*t2;		//type=2 - File des successeurs
