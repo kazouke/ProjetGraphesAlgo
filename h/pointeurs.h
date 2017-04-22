@@ -102,6 +102,7 @@ public:
 				nbArcs++;
 				tmp2 = tmp2->suiv;
 			}
+			tmp = tmp->suiv;
 		}
 		return nbArcs;
 	}

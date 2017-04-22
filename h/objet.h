@@ -67,8 +67,8 @@ public:
 	void convertToType1()
 	{
 		if (type == 1) return;
-		if (type == 3) convertToType2();
 		if (type == 2) { fs_aps2Mat();type = 1;delete t2;t2 = 0; }
+		if (type == 3) return; // A FAIRE
 	}
 	void convertToType2()
 	{
@@ -81,7 +81,7 @@ public:
 
 	void convertToType3()
 	{
-		if (type == 1) convertToType2();
+		if (type == 1) return; // A FAIRE
 		if (type == 2) { fs_aps2Pointeurs(); type = 3; delete t2;t2 = nullptr; } // A FAIRE
 		if (type == 3) return;
 	}
@@ -161,10 +161,14 @@ public:
 	//ROmain
 	void pointeur2fs_aps()
 	{
+		
 		int nbSommet = t3->getNbSommets();
+		cout << "oui";
 		int nbArcs = t3->getNbArcs();
+		cout << "oui";
 		t2 = new fileSuccesseurs(nbSommet, nbArcs+nbSommet);
 		int cpt = 1;
+		cout << "oui";
 		for (int i = 1;i <= nbSommet;i++)
 		{
 			for (int j = 0;j < t3->getNbSuccesseur(i);j++)
