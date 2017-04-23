@@ -17,14 +17,14 @@ public:
 		fcout[0] = nbArcs;
 		aps[0] = nbSommets;
 	}
-
+	
 	//Set - Adrien
-	void setValeur(int n, int x, int cout) { fs[n] = x; fcout[n] = cout;}
+	void setValeur(int n, int x, int couts) {	if(!(0 <= n && n <= fs[0])){cout<<"Depassement de tableau"<<endl;}	fs[n] = x; fcout[n] = couts;}
 	//Get - Adrien
-	int getValeur(int n) const { return fs[n]; }
-	int getCout(int n) const { return fcout[n]; }
-	int getNbSommets()   const { return aps[0]; }
-	int getNbArcs()      const { return fs[0] - aps[0]; }
+	int getValeur(int n) const 	{ if(!(0<=n && n<=fs[0])){cout<<"Depassement de tableau";return -1;}	return fs[n]; }
+	int getCout(int n) const 	{ if(!(0<=n && n<=fs[0])){cout<<"Depassement de tableau";return -1;}	return fcout[n]; }
+	int getNbSommets()   const 	{ return aps[0]; }
+	int getNbArcs()      const 	{ return fs[0] - aps[0]; }
 	//Get - Romain
 	int getAps(int n) const { return aps[n]; }
 

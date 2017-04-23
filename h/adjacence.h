@@ -37,6 +37,7 @@ public:
 	//Adrien - vérifie si l'arc se situe dans le tableau
 	bool dansTableau(int i, int j) const {
 		if (0 <= i && i <= t[0][0] && 0 <= j && j <= t[0][0]) return true;
+		cout<<"Depassement de tableau !"<<endl;
 		return false;
 	}
 
