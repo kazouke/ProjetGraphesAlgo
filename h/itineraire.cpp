@@ -191,6 +191,7 @@ void itineraire::charger()
 			a->setValeurLien(nbDep,nbArr,distance);
 		}
 		o.chargerAdjacence(a);
+		afficherMatrice();
 	}
 	in.close();
 }

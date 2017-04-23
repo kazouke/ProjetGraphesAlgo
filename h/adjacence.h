@@ -60,7 +60,7 @@ public:
 		int cpt=0;
 		for(int i=1;i<=t[0][0];i++)
 		{
-			for(int j=1;j<t[0][0];j++)
+			for(int j=1;j<=t[0][0];j++)
 			{
 				if(t[i][j]!=0)
 				{
