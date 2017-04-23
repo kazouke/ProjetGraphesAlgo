@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iomanip>
+#include <iostream>
 using namespace std;
 
 class adjacence {
@@ -37,7 +38,7 @@ public:
 	//Adrien - vérifie si l'arc se situe dans le tableau
 	bool dansTableau(int i, int j) const {
 		if (0 <= i && i <= t[0][0] && 0 <= j && j <= t[0][0]) return true;
-		cout<<"Depassement de tableau !"<<endl;
+		cout << "Depassement de tableau !" << endl;
 		return false;
 	}
 
@@ -53,10 +54,26 @@ public:
 		return t[i][j];
 	}
 	
+	//ROmain
+	int getNbLien() const
+	{
+		int cpt=0;
+		for(int i=1;i<=t[0][0];i++)
+		{
+			for(int j=1;j<t[0][0];j++)
+			{
+				if(t[i][j]!=0)
+				{
+					cpt++;
+				}
+			}
+		}
+		return cpt;
+	}
 	//jp
-	int getTaille() const {return t[0][0];}
-	int getCase(int i, int j) const {return t[i][j];}
-	void setCase(int i, int j,int valeur) {
+	int getTaille() const { return t[0][0]; }
+	int getCase(int i, int j) const { return t[i][j]; }
+	void setCase(int i, int j, int valeur) {
 		t[i][j] = valeur;
 	}
 

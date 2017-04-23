@@ -1,6 +1,6 @@
 #include "itineraire.h"
 
-
+const string FICHIERVILLE="ville.txt";
 ////romain
 itineraire::itineraire() : o{},villes()
 {
@@ -27,7 +27,7 @@ void itineraire::initialiser()
 void itineraire::modifierRoutes()
 {
 	int nbDep, nbArr;
-	int distance;
+	int distance,sensUnique;
 	
 	do 
 	{
@@ -37,7 +37,7 @@ void itineraire::modifierRoutes()
 		adjacence *a = o.getType1();
 		do
 		{
-			cout << "Rentrez le numéro de la ville de départ (rentrez 0 pour quitter):" << endl;
+			cout << "Rentrez le numéro de la ville de depart (rentrez 0 pour quitter):" << endl;
 			afficherVille();
 			cin >> nbDep;
 		} while (nbDep<0 || nbDep>nbVilles);
@@ -46,19 +46,27 @@ void itineraire::modifierRoutes()
 		{
 			do
 			{
-				cout << "Rentrez le numéro de la ville d'arrivée :" << endl;
+				cout << "Rentrez le numero de la ville d'arrivee :" << endl;
 				afficherVille();
 				cin >> nbArr;
 			} while (nbDep < 1 || nbDep == nbArr || nbDep>nbVilles);
 			
 			do
 			{
-				cout << "Rentre la distance du trajet (>=0):" << endl;
+				cout << "Rentrez la longueur de la route (>=0):" << endl;
 				cin >> distance;
 			} while (distance < 0);
+			do
+			{
+				cout<<"Route a sens unique ? (1=Oui, 2=Non)"<<endl;
+				cin>>sensUnique;
+			}while(sensUnique<=0 && sensUnique>2);
+			if(sensUnique==2)
+			{
+				a->setValeurLien(nbArr,nbDep,distance);
+			}
 			a->setValeurLien(nbDep, nbArr, distance);
 			cout<<a->getValeurLien(nbDep, nbArr);
-			system("pause");
 			
 		}
 	} while (nbDep != 0);
@@ -114,20 +122,75 @@ void itineraire::calculerItineraire()
 		afficherVille();
 		cin >> nbArr;
 	} while (nbDep < 1 || nbDep == nbArr || nbDep>nbVilles);
-	vector<int> chemins = o.Dijkstra(nbDep);
-	/*cout << "oui";
-	afficheChemin(nbDep, nbArr, chemins);*/
+	vector<int> pred;
+	vector<int> chemins = o.Dijkstra(nbDep,pred);
+	string s{};
+	trouveChemin(nbDep, nbArr, pred,s);
+	cout<<"Le chemin le plus rapide est le suivant :"<<s<<endl;
 }
 
-void itineraire::afficheChemin(int nbDep, int nbArr, vector<int> &chemins)
+void itineraire::trouveChemin(int nbDep, int nbArr, const vector<int> &chemins, string &route)
 {
 	if (nbDep == nbArr)
 	{
-		cout << nbDep<<endl;
+		route=villes[nbDep]+" "+route;
+		//cout << villes[nbDep<<endl;
 	}
 	else
 	{
-		cout << nbArr << " ";
-		afficheChemin(nbDep, chemins[nbArr], chemins);
+		route=villes[nbArr]+" "+route;
+		//cout << villes[nbArr]<< " ";
+		trouveChemin(nbDep, chemins[nbArr], chemins,route);
 	}
+}
+
+void itineraire::sauvegarder() 
+{
+	ofstream out(FICHIERVILLE);
+	
+	if(out)
+	{
+		out<<nbVilles<<endl;
+		for(int i=1;i<=nbVilles;i++)
+		{
+			out<<villes[i]<<endl;
+		}
+		adjacence *a = o.getType1();
+		out<<a->getNbLien()<<endl;
+		for(int i=1;i<=a->getTaille();i++)
+		{
+			for(int j=1;j<=a->getTaille();j++)
+			{
+				if(a->getValeurLien(i,j)!=0)
+				{
+					out<<i<<" "<<j<<" "<<a->getValeurLien(i,j)<<endl;
+				}
+			}
+		}
+	}
+	out.close();
+}
+
+void itineraire::charger()
+{
+	ifstream in(FICHIERVILLE);
+	if(in)
+	{
+		in>>nbVilles;
+		villes.resize(nbVilles+1);
+		for(int i=1;i<=nbVilles;i++)
+		{
+			in>>villes[i];
+		}
+		adjacence *a= new adjacence(nbVilles);
+		int nbRoutes, nbDep, nbArr, distance;
+		in>>nbRoutes;
+		for(int i=0;i<nbRoutes;i++)
+		{
+			in>>nbDep>>nbArr>>distance;
+			a->setValeurLien(nbDep,nbArr,distance);
+		}
+		o.chargerAdjacence(a);
+	}
+	in.close();
 }

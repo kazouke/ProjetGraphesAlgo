@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
 using namespace std;
 /////Romain
 class itineraire
@@ -16,8 +17,10 @@ public:
 	void afficherVille();
 	void afficherMatrice();
 	void calculerItineraire();
-	void afficheChemin(int nbDep, int NbArr, vector<int>& chemins);
+	void trouveChemin(int nbDep, int NbArr, const vector<int>& chemins, string &route);
 	
+	void sauvegarder();
+	void charger();
 
 private:
 	objet o;
