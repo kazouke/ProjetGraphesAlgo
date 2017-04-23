@@ -416,13 +416,14 @@ public:
 	}*/
 
 	//jp
-	void nb_pred() //renvoie le nb de prédécesseurs pour chaque sommet
+	vector<int> nb_pred() //renvoie le nb de prédécesseurs pour chaque sommet
 	{
 		convertToType2();
-		vector<int> fpred(t2->getAps(0) + 1, 0);
+		vector<int> fpred(t2->getNbSommets() + 1, 0);
 
 		for (int i = 1; i <= t2->getValeur(0); i++)
 			fpred[t2->getValeur(i)]++;
+		return fpred;
 	}
 
 	//jp
