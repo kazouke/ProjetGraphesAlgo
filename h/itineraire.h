@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-/////Romain & Julien
+/////Romain
 class itineraire
 {
 public:

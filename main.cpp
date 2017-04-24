@@ -4,7 +4,7 @@
 #include "h/adjacence.h"
 #include "h/itineraire.h"
 
-const string nomFichier = "data";
+//const string nomFichier = "data";
 
 
 
@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 
 	
 	
-	itineraire it();
+	itineraire it;
 	it.menu();
 	
 	/*

@@ -4,11 +4,11 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o
-LINKOBJ  = main.o
-LIBS     = -L"U:/Documents/gcc-6-win64/lib" -L"U:/Documents/gcc-6-win64/x86_64-w64-mingw32/lib" -static-libstdc++ -static-libgcc
-INCS     = -I"U:/Documents/gcc-6-win64/include" -I"U:/Documents/gcc-6-win64/x86_64-w64-mingw32/include" -I"U:/Documents/gcc-6-win64/lib/gcc/x86_64-w64-mingw32/6.2.1/include"
-CXXINCS  = -I"U:/Documents/gcc-6-win64/include" -I"U:/Documents/gcc-6-win64/x86_64-w64-mingw32/include" -I"U:/Documents/gcc-6-win64/lib/gcc/x86_64-w64-mingw32/6.2.1/include"
+OBJ      = main.o h/itineraire.o
+LINKOBJ  = main.o h/itineraire.o
+LIBS     = -L"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/lib" -L"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/x86_64-w64-mingw32/lib" -static-libstdc++ -static-libgcc
+INCS     = -I"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/include" -I"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/x86_64-w64-mingw32/include" -I"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/lib/gcc/x86_64-w64-mingw32/6.2.1/include"
+CXXINCS  = -I"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/include" -I"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/x86_64-w64-mingw32/include" -I"D:/Programmes/Dev-Cpp/MinGW64/gcc-6-win64/lib/gcc/x86_64-w64-mingw32/6.2.1/include"
 BIN      = Project1.exe
 CXXFLAGS = $(CXXINCS) 
 CFLAGS   = $(INCS) 
@@ -26,3 +26,6 @@ $(BIN): $(OBJ)
 
 main.o: main.cpp
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+h/itineraire.o: h/itineraire.cpp
+	$(CPP) -c h/itineraire.cpp -o h/itineraire.o $(CXXFLAGS)

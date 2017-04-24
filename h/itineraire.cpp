@@ -196,17 +196,21 @@ void itineraire::charger()
 	in.close();
 }
 
+
+//Utilise les fonctionnalités de la classe
+//Avec une interface utilisateur - Julien
 void itineraire::menu()
 {
 	int choix = -1;
 	
 	while(choix != 0)
 	{
-		system("cls");
-		cout << "Charger - 1" << endl;
+		//system("cls");
+		cout << endl << "Charger - 1" << endl;
 		cout << "Sauvegarder - 2" << endl;
 		cout << "Nouvel itinéraire - 3" << endl;
 		cout << "Modifier itinéraire - 4" << endl;
+		cout << "Calculer itinéraire - 5" << endl;
 		
 		cout << "Quitter - 0" << endl;
 		cout << "Choix : "; cin >> choix;
@@ -221,12 +225,13 @@ void itineraire::menu()
 				break;
 			case 3:
 				initialiser();
+				modifierRoutes();
 				break;
 			case 4:
 				modifierRoutes();
 				break;	
 			case 5:
-			
+				calculerItineraire();
 				break;
 		}
 	}
