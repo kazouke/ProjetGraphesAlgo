@@ -195,3 +195,40 @@ void itineraire::charger()
 	}
 	in.close();
 }
+
+void itineraire::menu()
+{
+	int choix = -1;
+	
+	while(choix != 0)
+	{
+		system("cls");
+		cout << "Charger - 1" << endl;
+		cout << "Sauvegarder - 2" << endl;
+		cout << "Nouvel itinéraire - 3" << endl;
+		cout << "Modifier itinéraire - 4" << endl;
+		
+		cout << "Quitter - 0" << endl;
+		cout << "Choix : "; cin >> choix;
+		
+		switch(choix)
+		{
+			case 1:
+				charger();
+				break;
+			case 2:
+				sauvegarder();
+				break;
+			case 3:
+				initialiser();
+				break;
+			case 4:
+				modifierRoutes();
+				break;	
+			case 5:
+			
+				break;
+		}
+	}
+
+}

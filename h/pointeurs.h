@@ -1,9 +1,9 @@
 #ifndef POINTEURS_H
 #define POINTEURS_H
 
-/////////////////////////LISTE CHAINEE//////////////////
+/////////////////////////LISTE CHAINEE Romain & Julien//////////////////
 class chainonSuccesseur;
-//Romain
+
 class chainon
 {
 	friend class pointeurs;
@@ -27,7 +27,7 @@ private:
 	//premier successeur
 	chainonSuccesseur* succ; //good succ
 };
-//Romain
+
 class chainonSuccesseur
 {
 	friend class chainon;

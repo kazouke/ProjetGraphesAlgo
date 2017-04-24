@@ -2,10 +2,20 @@
 #include "h/fichier.h"
 #include "h/objet.h"
 #include "h/adjacence.h"
+#include "h/itineraire.h"
 
 const string nomFichier = "data";
 
+
+
 int main(int argc, char** argv) {
+
+	
+	
+	itineraire it();
+	it.menu();
+	
+	/*
 	objet o(new adjacence(10));
 	fichier h(nomFichier);
 	h.charger(o);
@@ -17,11 +27,13 @@ int main(int argc, char** argv) {
 	cout<<"Conversion type 1 : "<<endl;
 	o.convertToType1();
 	o.afficher();
-	/*cout<<endl<<"Conversion type 3 : "<<endl;
+	
+	cout<<endl<<"Conversion type 3 : "<<endl;
 	o.convertToType3();
-	o.afficher();*/
+	o.afficher();
+	
 	//-------------------
-	h.sauvegarder(o);
+	h.sauvegarder(o);*/
 	return 0;
 }
 

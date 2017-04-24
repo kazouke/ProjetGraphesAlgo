@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ITINERAIRE_H
+#define ITINERAIRE_H
+
 
 #include "objet.h"
 #include <vector>
@@ -6,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-/////Romain
+/////Romain & Julien
 class itineraire
 {
 public:
@@ -21,9 +23,11 @@ public:
 	
 	void sauvegarder();
 	void charger();
+	void menu();
 
 private:
 	objet o;
 	vector<string> villes;
 	int nbVilles;
 };
+#endif
